@@ -17,4 +17,4 @@ mongoose
 
 app.use(express.json());
 app.use("/users", UserRouter);
-// app.use("/records", RecordRouter);
+app.use("/records", RecordRouter);

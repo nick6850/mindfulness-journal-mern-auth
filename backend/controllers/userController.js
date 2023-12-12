@@ -47,4 +47,3 @@ function createToken(id) {
 }
 
 module.exports = { login, register };
-6;
