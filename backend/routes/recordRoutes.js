@@ -1,14 +1,19 @@
 const RecordRouter = require("express").Router();
 const authMiddleware = require("../middleware/authMiddleware");
 
-const getAllRecords = require("../controllers/recordController");
+const {
+  getAllRecords,
+  createRecord,
+  editRecord,
+  deleteRecord,
+} = require("../controllers/recordController");
 
 RecordRouter.get("/", authMiddleware, getAllRecords);
 
-// RecordRouter.post("/", createRecord);
+RecordRouter.post("/", authMiddleware, createRecord);
 
-// RecordRouter.put("/:id", editRecord);
+RecordRouter.put("/:id", authMiddleware, editRecord);
 
-// RecordRouter.delete("/:id", deleteRecord);
+RecordRouter.delete("/:id", authMiddleware, deleteRecord);
 
 module.exports = RecordRouter;
