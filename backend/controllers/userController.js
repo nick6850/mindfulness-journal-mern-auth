@@ -24,11 +24,11 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(401).json("Wrong credentials");
-  }
-
   try {
+    if (!user) {
+      throw new Error("Wrong credentials");
+    }
+
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (isCorrectPassword) {
       return res
