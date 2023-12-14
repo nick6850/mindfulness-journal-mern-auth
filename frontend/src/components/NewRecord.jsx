@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { createRecord } from "../redux/recordsSlice";
-import { useDispatch } from "react-redux";
+import { createRecord } from "../redux/authAndRecords";
+import { useDispatch, useSelector } from "react-redux";
 function NewRecord() {
   const [newRecord, setNewRecord] = useState({
     title: "",
@@ -10,9 +10,12 @@ function NewRecord() {
     recordDate: new Date().toISOString().split("T")[0],
   });
 
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
 
   function handleChange(e) {
+    setError("");
     setNewRecord((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
@@ -23,6 +26,7 @@ function NewRecord() {
     e.preventDefault();
     const { title, content, mood, tags, recordDate } = newRecord;
     if (!title || !content || !mood || !tags || !recordDate) {
+      setError("Please fill in all the fields");
       return;
     }
 
@@ -83,6 +87,7 @@ function NewRecord() {
       />
 
       <button type="submit">Submit</button>
+      <p>{error && error}</p>
     </form>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteRecord } from "../redux/recordsSlice";
+import { deleteRecord } from "../redux/authAndRecords";
 import EditRecord from "./EditRecord";
 
 function Record(props) {
@@ -9,8 +9,6 @@ function Record(props) {
 
   const formattedDate = new Date(recordDate).toLocaleDateString();
   const dispatch = useDispatch();
-
-  const options = { year: "numeric", month: "long", day: "numeric" };
 
   if (isEdited) {
     return <EditRecord setIsEdited={setIsEdited} {...props.record} />;

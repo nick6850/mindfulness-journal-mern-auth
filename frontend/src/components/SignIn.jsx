@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/authSlice";
+import { login } from "../redux/authAndRecords";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { error, isLoading } = useSelector((state) => state.auth);
+  const { error, isLoading, token } = useSelector(
+    (state) => state.authAndRecords
+  );
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleSubmit(e) {
@@ -13,8 +17,15 @@ function SignIn() {
     dispatch(login({ email, password }));
   }
 
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
+
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
+      <p>Log in:</p>
       <label htmlFor="email">Your email:</label>
       <input
         type="text"
@@ -31,6 +42,9 @@ function SignIn() {
         Log in
       </button>
       <div>{error && error}</div>
+      <p>
+        Don't have an account yet? <Link to="/register">Sing up here.</Link>
+      </p>
     </form>
   );
 }

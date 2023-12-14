@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { editRecord } from "../redux/recordsSlice";
+import { editRecord } from "../redux/authAndRecords";
 import { useDispatch } from "react-redux";
 function EditRecord({
   content,
@@ -10,10 +10,12 @@ function EditRecord({
   setIsEdited,
   _id,
 }) {
+  const formattedDate = new Date(recordDate).toISOString().split("T")[0];
+
   const [newRecord, setNewRecord] = useState({
     content,
     mood,
-    recordDate,
+    recordDate: formattedDate,
     tags,
     title,
   });

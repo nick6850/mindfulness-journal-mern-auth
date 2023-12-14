@@ -2,17 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+  token: localStorage.getItem("token") || "",
   records: [],
   isLoading: false,
   error: null,
 };
 
 export const fetchRecords = createAsyncThunk(
-  "records/fetchRecords",
-  async (_, { getState }) => {
+  "authAndRecords/fetchRecords",
+  async () => {
     const res = await axios("http://localhost:3001/records", {
       headers: {
-        Authorization: `Bearer ${getState().auth.token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return res.data;
@@ -20,11 +21,11 @@ export const fetchRecords = createAsyncThunk(
 );
 
 export const createRecord = createAsyncThunk(
-  "records/createRecord",
-  async (newRecord, { getState }) => {
+  "authAndRecords/createRecord",
+  async (newRecord) => {
     const res = await axios.post("http://localhost:3001/records", newRecord, {
       headers: {
-        Authorization: `Bearer ${getState().auth.token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return res.data;
@@ -32,38 +33,67 @@ export const createRecord = createAsyncThunk(
 );
 
 export const editRecord = createAsyncThunk(
-  "records/editRecord",
-  async ({ newRecord, _id }, { getState }) => {
+  "authAndRecords/editRecord",
+  async ({ newRecord, _id }) => {
     const res = await axios.put(
       `http://localhost:3001/records/${_id}`,
       newRecord,
       {
         headers: {
-          Authorization: `Bearer ${getState().auth.token}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
-    console.log("HIII!");
+    console.log(res.data);
     return res.data;
   }
 );
 
 export const deleteRecord = createAsyncThunk(
-  "records/deleteRecord",
-  async (id, { getState }) => {
+  "authAndRecords/deleteRecord",
+  async (id) => {
     const res = await axios.delete(`http://localhost:3001/records/${id}`, {
       headers: {
-        Authorization: `Bearer ${getState().auth.token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return id;
   }
 );
 
-export const recordsSlice = createSlice({
-  name: "records",
+export const login = createAsyncThunk(
+  "authAndRecords/login",
+  async ({ email, password }) => {
+    const res = await axios.post("http://localhost:3001/users/login", {
+      email,
+      password,
+    });
+    localStorage.setItem("token", res.data.token);
+    return res.data.token;
+  }
+);
+
+export const register = createAsyncThunk(
+  "authAndRecords/register",
+  async ({ email, password }) => {
+    const res = await axios.post("http://localhost:3001/users/register", {
+      email,
+      password,
+    });
+    return res.data;
+  }
+);
+
+export const authAndRecords = createSlice({
+  name: "authAndRecords",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem("token");
+      state.token = "";
+      state.records = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRecords.pending, (state) => {
       state.isLoading = true;
@@ -106,14 +136,33 @@ export const recordsSlice = createSlice({
     builder.addCase(editRecord.fulfilled, (state, action) => {
       state.isLoading = false;
       state.records = state.records.map((record) => {
-        return record._id === action.payload ? action.payload : record;
+        return record._id === action.payload._id ? action.payload : record;
       });
     });
     builder.addCase(editRecord.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message;
     });
+    builder.addCase(login.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.token = action.payload;
+    });
+    builder.addCase(login.rejected, (state) => {
+      state.isLoading = false;
+      state.error = "Wrong credentials";
+    });
+    builder.addCase(register.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(register.rejected, (state) => {
+      state.isLoading = false;
+      state.error = "Invalid login or password";
+    });
   },
 });
 
-export default recordsSlice.reducer;
+export const { logout } = authAndRecords.actions;
+export default authAndRecords.reducer;
