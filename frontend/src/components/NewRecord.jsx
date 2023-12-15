@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { createRecord } from "../redux/authAndRecords";
-import { useDispatch, useSelector } from "react-redux";
-function NewRecord() {
+import { useDispatch } from "react-redux";
+import { CgCloseO } from "react-icons/cg";
+function NewRecord({ setIsAddingRecord }) {
   const [newRecord, setNewRecord] = useState({
     title: "",
     content: "",
@@ -41,7 +42,17 @@ function NewRecord() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-1 bg-blue-300 p-6"
+    >
+      <button
+        onClick={() => setIsAddingRecord(false)}
+        className="self-end text-xl text-blue-800"
+      >
+        <CgCloseO />
+      </button>
+      <p>New record</p>
       <label htmlFor="title">Title:</label>
       <input
         type="text"
@@ -55,6 +66,7 @@ function NewRecord() {
         id="content"
         value={newRecord.content}
         onChange={handleChange}
+        rows={5}
       />
 
       <label htmlFor="mood">Mood:</label>

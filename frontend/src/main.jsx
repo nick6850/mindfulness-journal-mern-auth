@@ -11,15 +11,17 @@ import SignUp from "./components/SignUp.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Navbar />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <div className="bg-blue-400">
+      <Provider store={store}>
+        <Navbar />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </div>
   </React.StrictMode>
 );
