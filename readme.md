@@ -8,6 +8,8 @@ This project is a Mindfulness Journal application developed to enhance my profic
 
   - React
   - React Router DOM
+  - Redux Toolkit
+  - Tailwind CSS
 
 - **Backend:**
 
