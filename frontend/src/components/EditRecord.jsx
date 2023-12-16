@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { editRecord } from "../redux/authAndRecords";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { CgCloseO } from "react-icons/cg";
+
 function EditRecord({
   content,
   mood,
@@ -21,6 +23,7 @@ function EditRecord({
   });
 
   const dispatch = useDispatch();
+  const { error, isLoading } = useSelector((state) => state.authAndRecords);
 
   function handleChange(e) {
     setNewRecord((prevState) => ({
@@ -41,11 +44,19 @@ function EditRecord({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-1 bg-blue-300 p-6 rounded-sm text-blue-800 font-semibold mb-3"
+    >
+      <button onClick={() => setIsEdited(false)} className="self-end text-xl">
+        <CgCloseO />
+      </button>
+
       <label htmlFor="title">Title:</label>
       <input
         type="text"
         id="title"
+        className="px-3 text-black"
         value={newRecord.title}
         onChange={handleChange}
       />
@@ -53,12 +64,19 @@ function EditRecord({
       <label htmlFor="content">Content:</label>
       <textarea
         id="content"
+        className="px-3 text-black"
         value={newRecord.content}
         onChange={handleChange}
+        rows={5}
       />
 
       <label htmlFor="mood">Mood:</label>
-      <select id="mood" value={newRecord.mood} onChange={handleChange}>
+      <select
+        id="mood"
+        value={newRecord.mood}
+        onChange={handleChange}
+        className="text-black"
+      >
         <option value="" disabled>
           Select Mood
         </option>
@@ -74,6 +92,7 @@ function EditRecord({
       <input
         type="text"
         id="tags"
+        className="px-3 py-1 text-black"
         value={newRecord.tags}
         onChange={handleChange}
       />
@@ -82,11 +101,13 @@ function EditRecord({
       <input
         type="date"
         id="recordDate"
-        value={newRecord.recordDate}
+        className="text-black"
+        defaultValue={newRecord.recordDate}
         onChange={handleChange}
       />
 
-      <button type="submit">Submit</button>
+      <button className="mt-3 text-xl">Submit</button>
+      <p>{error && error}</p>
     </form>
   );
 }

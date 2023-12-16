@@ -12,3 +12,7 @@
 h1 {
   font-family: "Merienda", cursive;
 }
+
+.text-shadow {
+  text-shadow: 1px 0 1px black;
+}

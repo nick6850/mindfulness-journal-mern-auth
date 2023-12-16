@@ -11,7 +11,7 @@ import SignUp from "./components/SignUp.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className="bg-blue-400">
+    <div className="bg-blue-400 h-fit min-h-screen">
       <Provider store={store}>
         <Navbar />
         <BrowserRouter>

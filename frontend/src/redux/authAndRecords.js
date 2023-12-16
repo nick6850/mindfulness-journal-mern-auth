@@ -6,6 +6,7 @@ const initialState = {
   records: [],
   isLoading: false,
   error: null,
+  success: false,
 };
 
 export const fetchRecords = createAsyncThunk(
@@ -16,7 +17,13 @@ export const fetchRecords = createAsyncThunk(
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    return res.data;
+    // Sort records by date in descending order
+    const sortedRecords = res.data.sort(
+      (a, b) =>
+        new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime()
+    );
+
+    return sortedRecords;
   }
 );
 
@@ -92,6 +99,7 @@ export const authAndRecords = createSlice({
       localStorage.removeItem("token");
       state.token = "";
       state.records = [];
+      state.success = false;
     },
   },
   extraReducers: (builder) => {
@@ -111,7 +119,19 @@ export const authAndRecords = createSlice({
     });
     builder.addCase(createRecord.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.records.push(action.payload);
+      const newRecord = action.payload;
+
+      const insertIndex = state.records.findIndex(
+        (record) =>
+          new Date(record.recordDate).getTime() <
+          new Date(newRecord.recordDate).getTime()
+      );
+
+      if (insertIndex !== -1) {
+        state.records.splice(insertIndex, 0, newRecord);
+      } else {
+        state.records.push(newRecord);
+      }
     });
     builder.addCase(createRecord.rejected, (state, action) => {
       state.isLoading = false;
@@ -156,6 +176,11 @@ export const authAndRecords = createSlice({
     });
     builder.addCase(register.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.success = true;
+      state.error = false;
     });
     builder.addCase(register.rejected, (state) => {
       state.isLoading = false;

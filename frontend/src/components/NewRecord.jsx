@@ -44,19 +44,20 @@ function NewRecord({ setIsAddingRecord }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-1 bg-blue-300 p-6"
+      className="flex flex-col gap-1 bg-blue-300 p-6 rounded-sm text-blue-800 font-semibold"
     >
       <button
         onClick={() => setIsAddingRecord(false)}
-        className="self-end text-xl text-blue-800"
+        className="self-end text-xl"
       >
         <CgCloseO />
       </button>
-      <p>New record</p>
+      <p className="mb-2 text-xl">New record</p>
       <label htmlFor="title">Title:</label>
       <input
         type="text"
         id="title"
+        className="px-3 text-black"
         value={newRecord.title}
         onChange={handleChange}
       />
@@ -64,13 +65,19 @@ function NewRecord({ setIsAddingRecord }) {
       <label htmlFor="content">Content:</label>
       <textarea
         id="content"
+        className="px-3 text-black"
         value={newRecord.content}
         onChange={handleChange}
         rows={5}
       />
 
       <label htmlFor="mood">Mood:</label>
-      <select id="mood" value={newRecord.mood} onChange={handleChange}>
+      <select
+        id="mood"
+        value={newRecord.mood}
+        onChange={handleChange}
+        className="text-black"
+      >
         <option value="" disabled>
           Select Mood
         </option>
@@ -86,6 +93,7 @@ function NewRecord({ setIsAddingRecord }) {
       <input
         type="text"
         id="tags"
+        className="px-3 py-1 text-black"
         value={newRecord.tags}
         onChange={handleChange}
       />
@@ -94,11 +102,14 @@ function NewRecord({ setIsAddingRecord }) {
       <input
         type="date"
         id="recordDate"
+        className="text-black"
         value={newRecord.recordDate}
         onChange={handleChange}
       />
 
-      <button type="submit">Submit</button>
+      <button type="submit" className="mt-3 text-xl">
+        Submit
+      </button>
       <p>{error && error}</p>
     </form>
   );

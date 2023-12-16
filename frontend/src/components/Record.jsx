@@ -16,30 +16,43 @@ function Record(props) {
   }
 
   return (
-    <div className=" p-4 rounded-sm bg-blue-300 flex flex-col text-blue-800">
+    <div className=" mt-3 p-4 rounded-sm bg-blue-300 flex flex-col text-blue-800">
       <div className="self-end flex gap-2 ">
-        <button className="w-min " onClick={() => setIsEdited(true)}>
+        <button className="w-min text-xl" onClick={() => setIsEdited(true)}>
           <CgPen />
         </button>
-        <button className="w-min " onClick={() => dispatch(deleteRecord(_id))}>
+        <button
+          className="w-min text-xl"
+          onClick={() => dispatch(deleteRecord(_id))}
+        >
           <CgCloseO />
         </button>
       </div>
 
       <span className="font-semibold mt-3">Title:</span>
-      <div className="mb-3 bg-blue-50 text-blue-800 px-3 py-2 rounded-md mt-1">
+      <div
+        onClick={() => setIsEdited(true)}
+        className="mb-3 bg-blue-50 text-black px-3 py-2 rounded-md mt-1"
+      >
         {title}
       </div>
       <span className="font-semibold">Description:</span>
-      <div className="mb-3 bg-blue-50 text-blue-800 px-3 py-2 rounded-md mt-1">
+      <div
+        onClick={() => setIsEdited(true)}
+        className="mb-3 bg-blue-50 text-black px-3 py-2 rounded-md mt-1"
+      >
         {content}
       </div>
       <span className="font-semibold">Mood:</span>
-      <div className="mb-3 bg-blue-50 text-blue-800 px-3 py-2 rounded-md mt-1">
+      <div
+        onClick={() => setIsEdited(true)}
+        className="mb-3 bg-blue-50 text-black px-3 py-2 rounded-md mt-1"
+      >
         {mood}
       </div>
-      <div className="self-end text-center text-xs opacity-80 font-bold">
-        [{tags.join(", ")}]<div>{formattedDate}</div>
+      <div className="self-end text-end text-xs opacity-90 font-bold ">
+        {tags.join(", ").toLowerCase()}
+        <div>{formattedDate}</div>
       </div>
     </div>
   );

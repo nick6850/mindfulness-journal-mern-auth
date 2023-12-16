@@ -7,20 +7,18 @@ function Navbar() {
   const { token } = useSelector((state) => state.authAndRecords);
 
   return (
-    <div>
-      <div className="w-screen flex justify-end p-5">
+    <div className="bg-blue-300 flex flex-col p-5">
+      <div className="flex justify-end">
         {token && (
           <button
             onClick={() => dispatch(logout())}
-            className="bg-blue-300 px-3 rounded-sm m-3"
+            className="text-white bg-blue-400 px-3 py-1 text-xl font-semibold rounded-sm hover:bg-blue-500"
           >
             Log out
           </button>
         )}
       </div>
-      <h1 className="text-center text-4xl text-blue-50 mb-3">
-        Mindfulness Journal
-      </h1>
+      <h1 className="text-center text-4xl text-white">Mindfulness Journal</h1>
     </div>
   );
 }

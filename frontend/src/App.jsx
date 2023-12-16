@@ -17,8 +17,8 @@ function App() {
   }, [token]);
 
   return (
-    <div className="w-screen h-fit min-h-screen flex flex-col items-center  gap-6 pt-4">
-      <div className="w-96 h-fit ">
+    <div className="w-screen h-fit min-h-screen flex flex-col items-center   gap-6 pt-4">
+      <div className="w-96 h-fit">
         {isAddingRecord ? (
           <NewRecord setIsAddingRecord={setIsAddingRecord} />
         ) : (
@@ -30,7 +30,7 @@ function App() {
           />
         )}
       </div>
-      <div className=" w-96 h-fit max-h-96 p-6 mb-3">
+      <div className=" w-96 mb-3">
         <AllRecords />
       </div>
     </div>
